@@ -12,6 +12,7 @@
 use MatesOfMate\Common\Process\ProcessExecutor;
 use MatesOfMate\ComposerExtension\Capability\ConfigResource;
 use MatesOfMate\ComposerExtension\Capability\InstallTool;
+use MatesOfMate\ComposerExtension\Capability\RemoveTool;
 use MatesOfMate\ComposerExtension\Capability\RequireTool;
 use MatesOfMate\ComposerExtension\Capability\UpdateTool;
 use MatesOfMate\ComposerExtension\Capability\WhyNotTool;
@@ -44,6 +45,7 @@ return static function (ContainerConfigurator $container): void {
 
     // Tools - automatically discovered by #[McpTool] attribute
     $services->set(InstallTool::class);
+    $services->set(RemoveTool::class);
     $services->set(RequireTool::class);
     $services->set(UpdateTool::class);
     $services->set(WhyTool::class);

@@ -24,29 +24,29 @@ use PHPUnit\Framework\TestCase;
  */
 class WhyToolTest extends TestCase
 {
-    public function testExecuteWithJsonOutput(): void
+    public function testExecuteReturnsFormattedOutput(): void
     {
         $runner = $this->createMock(ComposerRunner::class);
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $jsonOutput = [
-            ['symfony/framework-bundle', 'requires', 'psr/log (^1|^2|^3)'],
-        ];
-        $runResult = new RunResult(0, json_encode($jsonOutput, \JSON_THROW_ON_ERROR), '', true);
+        $runResult = new RunResult(0, 'psr/log is required by symfony/framework-bundle', '', false);
         $parsedResult = new ParsedResult(success: true, command: 'why');
 
         $runner->expects($this->once())
             ->method('run')
-            ->with(['why', 'psr/log'], true)
+            ->with(['why', 'psr/log'])
             ->willReturn($runResult);
 
         $parser->expects($this->once())
-            ->method('parseWhyOutput')
-            ->with($jsonOutput, 'psr/log')
+            ->method('parseCommandOutput')
+            ->with($runResult, 'why')
             ->willReturn($parsedResult);
 
-        $formatter->method('format')->willReturn('formatted output');
+        $formatter->expects($this->once())
+            ->method('format')
+            ->with($parsedResult, 'default')
+            ->willReturn('formatted output');
 
         $tool = new WhyTool($runner, $parser, $formatter);
         $result = $tool->execute('psr/log');
@@ -54,27 +54,26 @@ class WhyToolTest extends TestCase
         $this->assertSame('formatted output', $result);
     }
 
-    public function testExecuteWithNonJsonOutput(): void
+    public function testExecuteWithSummaryMode(): void
     {
         $runner = $this->createMock(ComposerRunner::class);
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $runResult = new RunResult(1, 'error', 'error output', false);
-        $parsedResult = new ParsedResult(success: false, command: 'why');
+        $runResult = new RunResult(0, 'output', '', false);
+        $parsedResult = new ParsedResult(success: true, command: 'why');
 
         $runner->method('run')->willReturn($runResult);
+        $parser->method('parseCommandOutput')->willReturn($parsedResult);
 
-        $parser->expects($this->once())
-            ->method('parseCommandOutput')
-            ->with($runResult, 'why')
-            ->willReturn($parsedResult);
-
-        $formatter->method('format')->willReturn('formatted output');
+        $formatter->expects($this->once())
+            ->method('format')
+            ->with($parsedResult, 'summary')
+            ->willReturn('summary output');
 
         $tool = new WhyTool($runner, $parser, $formatter);
-        $result = $tool->execute('unknown/package');
+        $result = $tool->execute('psr/log', 'summary');
 
-        $this->assertSame('formatted output', $result);
+        $this->assertSame('summary output', $result);
     }
 }

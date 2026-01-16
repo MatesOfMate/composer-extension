@@ -17,11 +17,11 @@ use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
 use Mcp\Capability\Attribute\McpTool;
 
 /**
- * Shows which packages depend on a given package.
+ * Removes a package from composer.json.
  *
  * @author Johannes Wachter <johannes@sulu.io>
  */
-class WhyTool
+class RemoveTool
 {
     public function __construct(
         private readonly ComposerRunner $runner,
@@ -31,17 +31,22 @@ class WhyTool
     }
 
     #[McpTool(
-        name: 'composer-why',
-        description: 'Show which packages depend on a specific package. Use this to understand why a package is installed or to trace dependency chains. Available modes: "default" (dependency list), "summary" (just counts), "detailed" (full dependency details).'
+        name: 'composer-remove',
+        description: 'Remove a package from composer.json. Use when removing a library or framework dependency from the project. Available modes: "default" (status + removed packages), "summary" (just counts and status), "detailed" (full output with metadata).'
     )]
     public function execute(
         string $package,
+        bool $dev = false,
         string $mode = 'default',
     ): string {
-        $args = ['why', $package];
+        $args = ['remove', $package];
+
+        if ($dev) {
+            $args[] = '--dev';
+        }
 
         $runResult = $this->runner->run($args);
-        $parsedResult = $this->parser->parseCommandOutput($runResult, 'why');
+        $parsedResult = $this->parser->parseCommandOutput($runResult, 'remove');
 
         return $this->formatter->format($parsedResult, $mode);
     }

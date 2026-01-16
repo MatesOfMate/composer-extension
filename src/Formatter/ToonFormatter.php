@@ -41,10 +41,7 @@ class ToonFormatter
 
         if ([] !== $result->packages) {
             $data['packages'] = array_map(
-                fn (array $pkg): array => [
-                    'name' => $pkg['name'],
-                    'version' => $pkg['version'],
-                ],
+                $this->formatPackage(...),
                 $result->packages
             );
             $data['package_count'] = $result->getPackageCount();
@@ -52,11 +49,7 @@ class ToonFormatter
 
         if ([] !== $result->dependencies) {
             $data['dependencies'] = array_map(
-                fn (array $dep): array => [
-                    'package' => $dep['package'],
-                    'requires' => $dep['requires'],
-                    'constraint' => $dep['constraint'] ?? $dep['version'] ?? '',
-                ],
+                $this->formatDependency(...),
                 $result->dependencies
             );
         }
@@ -132,5 +125,56 @@ class ToonFormatter
         }
 
         return toon($data);
+    }
+
+    /**
+     * @param array<string, string> $pkg
+     *
+     * @return array<string, string>
+     */
+    private function formatPackage(array $pkg): array
+    {
+        $formatted = [
+            'name' => $pkg['name'],
+            'version' => $pkg['version'],
+        ];
+
+        // Include action for install/update/require commands
+        if (isset($pkg['action'])) {
+            $formatted['action'] = $pkg['action'];
+        }
+
+        // Include previous version for updates/downgrades
+        if (isset($pkg['previous_version'])) {
+            $formatted['from'] = $pkg['previous_version'];
+        }
+
+        return $formatted;
+    }
+
+    /**
+     * @param array<string, string> $dep
+     *
+     * @return array<string, string>
+     */
+    private function formatDependency(array $dep): array
+    {
+        // Format for why/why-not commands (has 'target' key)
+        if (isset($dep['target'])) {
+            return [
+                'package' => $dep['package'],
+                'version' => $dep['version'] ?? '',
+                'relation' => $dep['requires'] ?? '',
+                'target' => $dep['target'],
+                'constraint' => $dep['constraint'] ?? '',
+            ];
+        }
+
+        // Standard format
+        return [
+            'package' => $dep['package'],
+            'requires' => $dep['requires'] ?? '',
+            'constraint' => $dep['constraint'] ?? $dep['version'] ?? '',
+        ];
     }
 }

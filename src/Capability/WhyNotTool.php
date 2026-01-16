@@ -45,17 +45,8 @@ class WhyNotTool
             $args[] = $version;
         }
 
-        $runResult = $this->runner->run($args, jsonOutput: true);
-
-        if ($runResult->isSuccessful() && $runResult->isJson) {
-            try {
-                $parsedResult = $this->parser->parseWhyNotOutput($runResult->getJsonOutput(), $package, $version);
-            } catch (\JsonException) {
-                $parsedResult = $this->parser->parseCommandOutput($runResult, 'why-not');
-            }
-        } else {
-            $parsedResult = $this->parser->parseCommandOutput($runResult, 'why-not');
-        }
+        $runResult = $this->runner->run($args);
+        $parsedResult = $this->parser->parseCommandOutput($runResult, 'why-not');
 
         return $this->formatter->format($parsedResult, $mode);
     }

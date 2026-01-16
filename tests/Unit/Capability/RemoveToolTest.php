@@ -11,7 +11,7 @@
 
 namespace MatesOfMate\ComposerExtension\Tests\Unit\Capability;
 
-use MatesOfMate\ComposerExtension\Capability\WhyNotTool;
+use MatesOfMate\ComposerExtension\Capability\RemoveTool;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Parser\ParsedResult;
@@ -22,25 +22,29 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Johannes Wachter <johannes@sulu.io>
  */
-class WhyNotToolTest extends TestCase
+class RemoveToolTest extends TestCase
 {
-    public function testExecuteWithPackageOnly(): void
+    public function testExecuteRemovesPackage(): void
     {
         $runner = $this->createMock(ComposerRunner::class);
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $runResult = new RunResult(0, 'php constraint output', '', false);
-        $parsedResult = new ParsedResult(success: true, command: 'why-not');
+        $runResult = new RunResult(0, '- Removing vendor/package (v1.2.3)', '', false);
+        $parsedResult = new ParsedResult(
+            success: true,
+            command: 'remove',
+            packages: [['name' => 'vendor/package', 'version' => 'v1.2.3', 'action' => 'removed']],
+        );
 
         $runner->expects($this->once())
             ->method('run')
-            ->with(['why-not', 'php'])
+            ->with(['remove', 'vendor/package'])
             ->willReturn($runResult);
 
         $parser->expects($this->once())
             ->method('parseCommandOutput')
-            ->with($runResult, 'why-not')
+            ->with($runResult, 'remove')
             ->willReturn($parsedResult);
 
         $formatter->expects($this->once())
@@ -48,38 +52,31 @@ class WhyNotToolTest extends TestCase
             ->with($parsedResult, 'default')
             ->willReturn('formatted output');
 
-        $tool = new WhyNotTool($runner, $parser, $formatter);
-        $result = $tool->execute('php');
+        $tool = new RemoveTool($runner, $parser, $formatter);
+        $result = $tool->execute('vendor/package');
 
         $this->assertSame('formatted output', $result);
     }
 
-    public function testExecuteWithVersion(): void
+    public function testExecuteWithDevFlag(): void
     {
         $runner = $this->createMock(ComposerRunner::class);
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $runResult = new RunResult(0, 'version conflict output', '', false);
-        $parsedResult = new ParsedResult(success: true, command: 'why-not');
+        $runResult = new RunResult(0, '', '', false);
+        $parsedResult = new ParsedResult(success: true, command: 'remove');
 
         $runner->expects($this->once())
             ->method('run')
-            ->with(['why-not', 'php', '7.4'])
+            ->with(['remove', 'vendor/package', '--dev'])
             ->willReturn($runResult);
 
-        $parser->expects($this->once())
-            ->method('parseCommandOutput')
-            ->with($runResult, 'why-not')
-            ->willReturn($parsedResult);
+        $parser->method('parseCommandOutput')->willReturn($parsedResult);
+        $formatter->method('format')->willReturn('formatted output');
 
-        $formatter->expects($this->once())
-            ->method('format')
-            ->with($parsedResult, 'default')
-            ->willReturn('formatted output');
-
-        $tool = new WhyNotTool($runner, $parser, $formatter);
-        $result = $tool->execute('php', '7.4');
+        $tool = new RemoveTool($runner, $parser, $formatter);
+        $result = $tool->execute('vendor/package', dev: true);
 
         $this->assertSame('formatted output', $result);
     }
@@ -90,8 +87,8 @@ class WhyNotToolTest extends TestCase
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $runResult = new RunResult(0, 'output', '', false);
-        $parsedResult = new ParsedResult(success: true, command: 'why-not');
+        $runResult = new RunResult(0, '', '', false);
+        $parsedResult = new ParsedResult(success: true, command: 'remove');
 
         $runner->method('run')->willReturn($runResult);
         $parser->method('parseCommandOutput')->willReturn($parsedResult);
@@ -101,8 +98,8 @@ class WhyNotToolTest extends TestCase
             ->with($parsedResult, 'summary')
             ->willReturn('summary output');
 
-        $tool = new WhyNotTool($runner, $parser, $formatter);
-        $result = $tool->execute('symfony/console', null, 'summary');
+        $tool = new RemoveTool($runner, $parser, $formatter);
+        $result = $tool->execute('vendor/package', mode: 'summary');
 
         $this->assertSame('summary output', $result);
     }

@@ -19,11 +19,28 @@ MCP extension providing Composer dependency management tools for AI assistants, 
 composer require matesofmate/composer-extension
 ```
 
+## Custom Command Configuration
+
+If Composer must run through Docker or another wrapper command, configure `matesofmate_composer.custom_command`.
+
+When set, the extension skips local binary lookup and runs the configured command from the project root.
+
+```php
+// config/packages/matesofmate.php
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+return static function (ContainerConfigurator $container): void {
+    $container->parameters()->set('matesofmate_composer.custom_command', [
+        'docker', 'compose', 'exec', 'php', 'composer',
+    ]);
+};
+```
+
 ## Requirements
 
 - PHP 8.2 or higher
 - Symfony AI Mate ^0.1 or ^0.2
-- Composer available in system PATH
+- Composer available in system PATH, or `matesofmate_composer.custom_command` configured
 
 ## Available Tools
 

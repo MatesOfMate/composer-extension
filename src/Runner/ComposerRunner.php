@@ -12,6 +12,7 @@
 namespace MatesOfMate\ComposerExtension\Runner;
 
 use MatesOfMate\Common\Process\ProcessExecutorInterface;
+use Symfony\Component\Process\Process;
 
 /**
  * Executes Composer commands and captures output.
@@ -22,8 +23,13 @@ use MatesOfMate\Common\Process\ProcessExecutorInterface;
  */
 class ComposerRunner
 {
+    /**
+     * @param array<int, string> $customCommand
+     */
     public function __construct(
         private readonly ProcessExecutorInterface $executor,
+        private readonly ?string $projectRoot = null,
+        private readonly array $customCommand = [],
     ) {
     }
 
@@ -36,12 +42,36 @@ class ComposerRunner
             $args[] = '--format=json';
         }
 
+        if ([] !== $this->customCommand) {
+            return $this->runCustomCommand($args, $jsonOutput);
+        }
+
         $result = $this->executor->execute('composer', $args, timeout: 300, usePhpBinary: true);
 
         return new RunResult(
             exitCode: $result->exitCode,
             output: $result->output,
             errorOutput: $result->errorOutput,
+            isJson: $jsonOutput,
+        );
+    }
+
+    /**
+     * @param array<int, string> $args
+     */
+    private function runCustomCommand(array $args, bool $jsonOutput): RunResult
+    {
+        $process = new Process(
+            [...$this->customCommand, ...$args],
+            $this->projectRoot,
+        );
+        $process->setTimeout(300);
+        $process->run();
+
+        return new RunResult(
+            exitCode: $process->getExitCode() ?? 1,
+            output: $process->getOutput(),
+            errorOutput: $process->getErrorOutput(),
             isJson: $jsonOutput,
         );
     }

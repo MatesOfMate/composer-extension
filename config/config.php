@@ -31,10 +31,14 @@ return static function (ContainerConfigurator $container): void {
         ->autowire()
         ->autoconfigure();
 
+    $container->parameters()->set('matesofmate_composer.custom_command', []);
+
     // Core infrastructure - composer is found via PATH using ExecutableFinder
     $services->set('matesofmate_composer.process_executor', ProcessExecutor::class);
     $services->set(ComposerRunner::class)
-        ->arg('$executor', service('matesofmate_composer.process_executor'));
+        ->arg('$executor', service('matesofmate_composer.process_executor'))
+        ->arg('$projectRoot', '%mate.root_dir%')
+        ->arg('$customCommand', '%matesofmate_composer.custom_command%');
 
     $services->set(OutputParser::class);
     $services->set(ToonFormatter::class);

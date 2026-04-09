@@ -87,4 +87,44 @@ class ComposerRunnerTest extends TestCase
         $this->assertFalse($result->isSuccessful());
         $this->assertSame('Package not found', $result->errorOutput);
     }
+
+    public function testCustomCommandBypassesProcessExecutor(): void
+    {
+        $executor = $this->createMock(ProcessExecutorInterface::class);
+        $executor->expects($this->never())->method('execute');
+
+        $runner = new ComposerRunner(
+            $executor,
+            '/tmp',
+            [\PHP_BINARY, '-r', 'fwrite(STDERR, "custom command failure"); exit(1);'],
+        );
+
+        $result = $runner->run(['install']);
+
+        $this->assertSame(1, $result->exitCode);
+    }
+
+    public function testDefaultBehaviorUnchangedWithEmptyCustomCommand(): void
+    {
+        $executor = $this->createMock(ProcessExecutorInterface::class);
+        $executor->expects($this->once())
+            ->method('execute')
+            ->with(
+                'composer',
+                ['install'],
+                300,
+                true
+            )
+            ->willReturn(new ProcessResult(
+                exitCode: 0,
+                output: 'Nothing to install',
+                errorOutput: '',
+            ));
+
+        $runner = new ComposerRunner($executor, '/some/root', []);
+        $result = $runner->run(['install']);
+
+        $this->assertTrue($result->isSuccessful());
+        $this->assertSame('Nothing to install', $result->output);
+    }
 }

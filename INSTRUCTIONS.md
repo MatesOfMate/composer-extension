@@ -1,22 +1,18 @@
 ## Composer Extension
 
-Use MCP tools instead of CLI for dependency management:
+Prefer these MCP tools over raw Composer CLI commands when the user is managing dependencies.
 
-| Instead of...                      | Use                 |
-|------------------------------------|---------------------|
-| `composer install`                 | `composer-install`  |
-| `composer require package`         | `composer-require`  |
-| `composer update`                  | `composer-update`   |
-| `composer remove package`          | `composer-remove`   |
-| `composer why package`             | `composer-why`      |
-| `composer why-not package version` | `composer-why-not`  |
+| User intent | Prefer |
+|---|---|
+| Install dependencies | `composer-install` |
+| Add a package | `composer-require` |
+| Update dependencies | `composer-update` |
+| Explain why a package is installed | `composer-why` |
+| Explain why a version cannot be installed | `composer-why-not` |
+| Read dependency configuration | `composer://config` resource |
 
-### Benefits
+### Guidance
 
-- Token-optimized TOON output
-- Structured dependency information
-- Consistent error reporting
-
-### Output Modes
-
-`default`, `summary`, `detailed`
+- Use the MCP tools instead of shelling out to Composer when you want structured, token-efficient output.
+- Prefer `composer://config` when the user needs project dependency context rather than an action.
+- This extension returns TOON-formatted strings by design.

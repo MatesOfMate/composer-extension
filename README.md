@@ -1,32 +1,42 @@
 # Composer Extension for Symfony AI Mate
 
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.2-8892BF.svg)](https://php.net/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
-MCP extension providing Composer dependency management tools for AI assistants, with token-optimized TOON format output.
+Composer dependency management tools for AI assistants, with TOON-optimized output tailored for token-efficient workflows.
 
 ## Features
 
-- **5 MCP Tools** for Composer operations (install, require, update, why, why-not)
-- **1 MCP Resource** for accessing composer.json configuration
-- **TOON Format** output for 40-50% token reduction
-- **Multiple Output Modes** (default, summary, detailed)
-- **Token-Optimized** responses designed for AI assistants
+- install, require, update, why, and why-not Composer operations
+- `composer://config` resource for project dependency context
+- TOON-formatted output for compact responses
+- custom command support for Docker or wrapper-based setups
 
 ## Installation
 
 ```bash
-composer require matesofmate/composer-extension
+composer require --dev matesofmate/composer-extension
+vendor/bin/mate init
+```
+
+In current AI Mate setups, extension discovery is handled automatically after Composer install and update. Use `vendor/bin/mate discover` when you want to refresh discovery artifacts such as `mate/AGENT_INSTRUCTIONS.md`.
+
+Use these commands when troubleshooting:
+
+```bash
+vendor/bin/mate debug:extensions
+vendor/bin/mate debug:capabilities
+vendor/bin/mate mcp:tools:list --extension=matesofmate/composer-extension
+```
+
+For Codex, use the generated wrapper:
+
+```bash
+./bin/codex
 ```
 
 ## Custom Command Configuration
 
-If Composer must run through Docker or another wrapper command, configure `matesofmate_composer.custom_command`.
-
-When set, the extension skips local binary lookup and runs the configured command from the project root.
+If Composer must run through Docker or another wrapper, configure `matesofmate_composer.custom_command`.
 
 ```php
-// config/packages/matesofmate.php
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $container): void {
@@ -38,139 +48,39 @@ return static function (ContainerConfigurator $container): void {
 
 ## Requirements
 
-- PHP 8.2 or higher
-- Symfony AI Mate ^0.1 or ^0.2
-- Composer available in system PATH, or `matesofmate_composer.custom_command` configured
+- PHP 8.2+
+- Symfony AI Mate 0.6+ recommended
+- Composer available locally, or `matesofmate_composer.custom_command` configured
 
 ## Available Tools
 
-### `composer-install`
+- `composer-install`
+- `composer-require`
+- `composer-update`
+- `composer-why`
+- `composer-why-not`
 
-Install dependencies from composer.json and composer.lock.
+All tools return TOON-formatted strings in this package. That is an intentional MatesOfMate product choice. Upstream `symfony/ai` is moving toward optional TOON with JSON fallback in PR `#1439`, but this package currently remains explicitly TOON-first.
 
-**Parameters:**
-- `preferDist` (bool): Download dist packages (default: true)
-- `noDev` (bool): Skip dev dependencies (default: false)
-- `optimizeAutoloader` (bool): Optimize autoloader (default: false)
-- `mode` (string): Output format mode (default: 'default')
+## Available Resource
 
-**Example:**
-```
-composer-install(noDev: true, mode: 'summary')
-```
+- `composer://config`
 
-### `composer-require`
-
-Add a new package requirement to composer.json.
-
-**Parameters:**
-- `package` (string): Package name (e.g., "symfony/console")
-- `version` (string|null): Version constraint (e.g., "^6.4")
-- `dev` (bool): Require as dev dependency (default: false)
-- `mode` (string): Output format mode (default: 'default')
-
-**Example:**
-```
-composer-require(package: 'symfony/console', version: '^6.4')
-composer-require(package: 'phpunit/phpunit', dev: true)
-```
-
-### `composer-update`
-
-Update dependencies to latest versions within constraints.
-
-**Parameters:**
-- `packages` (string|null): Specific packages to update (comma/space-separated, empty = all)
-- `preferDist` (bool): Download dist packages (default: true)
-- `withDependencies` (bool): Update dependencies too (default: true)
-- `mode` (string): Output format mode (default: 'default')
-
-**Example:**
-```
-composer-update()
-composer-update(packages: 'symfony/console, symfony/process')
-```
-
-### `composer-why`
-
-Show which packages depend on a specific package.
-
-**Parameters:**
-- `package` (string): Package name to investigate
-- `mode` (string): Output format mode (default: 'default')
-
-**Example:**
-```
-composer-why(package: 'psr/log')
-```
-
-### `composer-why-not`
-
-Show why a specific package version cannot be installed.
-
-**Parameters:**
-- `package` (string): Package name to investigate
-- `version` (string|null): Specific version to check
-- `mode` (string): Output format mode (default: 'default')
-
-**Example:**
-```
-composer-why-not(package: 'php', version: '7.4')
-```
-
-## Available Resources
-
-### `composer://config`
-
-Provides the content of composer.json file including dependencies, autoloading, and scripts configuration in token-optimized TOON format.
-
-**MIME Type:** `text/plain`
-
-## Output Modes
-
-All tools support multiple output modes via the `mode` parameter:
-
-- **`default`**: Standard output with key information (status, packages/dependencies, errors, warnings)
-- **`summary`**: Ultra-compact output (just counts and status)
-- **`detailed`**: Full information including metadata without truncation
-
-## Response Format
-
-All tools return **TOON-formatted strings** for maximum token efficiency:
-
-```
-command: install
-status: SUCCESS
-packages[2]{name,version}:
-  symfony/console|6.4.0
-  symfony/process|6.4.0
-package_count: 2
-```
+This resource exposes `composer.json` content in token-efficient TOON format.
 
 ## Development
 
 ```bash
-# Install dependencies
 composer install
-
-# Run tests
 composer test
-
-# Check code quality
 composer lint
-
-# Auto-fix code style
 composer fix
 ```
 
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
+Contributions are welcome. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
----
+## License
 
-*"Because every Mate needs Mates"*
+MIT

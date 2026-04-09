@@ -1,163 +1,35 @@
-# AGENTS.md - Multi-Agent Guidelines
+# AGENTS.md
 
-Guidelines for AI agents working on the Composer extension for Symfony AI Mate.
+Guidelines for agents working on the Composer extension.
 
-## Agent Role
+## Focus
 
-When assisting with this repository, you are helping maintain and extend an **MCP extension** that provides Composer dependency management tools for AI assistants.
+Maintain a package-specific MCP extension for Composer workflows. Keep docs, examples, and tool behavior aligned with the actual package.
 
-## Key Responsibilities
+## Important Rules
 
-### 1. Tool Development
-Assist with creating and maintaining MCP capabilities:
-- Tools: Executable actions marked with `#[McpTool]`
-- Resources: Static context data marked with `#[McpResource]`
-- Service registration in `config/services.php`
-- Comprehensive tests in `tests/Unit/`
+- Register capabilities in `config/config.php`.
+- Keep docs aligned with the current Mate workflow: `mate init`, automatic discovery, `mate discover` refreshes, and Codex wrappers.
+- This package is TOON-first by design. Do not describe it as optional TOON unless the implementation changes.
+- If you mention upstream PR `#1439`, describe it as upstream direction, not merged local behavior.
 
-### 2. Quality Assurance
-Ensure code meets standards:
-- Run `composer lint` before commits
-- Run `composer test` to verify functionality
-- Check that all JSON uses `\JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT`
-- Verify proper file headers are present
+## When Adding or Updating Tools
 
-### 3. Documentation Support
-Help maintain clear documentation:
-- Update README.md with new tools or features
-- Document tool capabilities and when AI should use them
-- Provide usage examples for end users
+1. add or update the capability in `src/Capability/`
+2. wire dependencies in `config/config.php`
+3. update parser, runner, or formatter code as needed
+4. add or update unit tests
+5. update README and `INSTRUCTIONS.md` if behavior changed
 
-## Multi-Agent Coordination
+## Quality Checks
 
-When multiple agents work on this project simultaneously:
-
-### File Ownership
-- Each agent should claim files before modifying them
-- Wait for acknowledgment before making changes
-- Release files when done
-
-### Communication Pattern
-```
-Agent A: "Claiming src/Capability/InstallTool.php for modification"
-Agent B: "Acknowledged, will avoid that file"
-Agent A: "Releasing src/Capability/InstallTool.php - changes complete"
-```
-
-## Code Standards
-
-### Code Style Conventions
-- **No** `declare(strict_types=1)` - Omitted by design
-- **No** `final` classes - Allow extensibility
-- All JSON encoding uses `\JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT`
-- File headers include MatesOfMate copyright
-
-### Tool Implementation Checklist
-When creating new tools:
-- [ ] Clear, descriptive `#[McpTool]` name: `composer-{action}`
-- [ ] Helpful description explaining when AI should use it
-- [ ] Returns TOON-formatted string via ToonFormatter
-- [ ] Supports `mode` parameter for output modes
-- [ ] Registered in `config/services.php`
-- [ ] Has corresponding test in `tests/Unit/Capability/`
-- [ ] Test validates output structure
-
-### Resource Implementation Checklist
-When creating new resources:
-- [ ] Custom URI scheme: `composer://path`
-- [ ] Descriptive name: `composer_{name}`
-- [ ] Returns array with `uri`, `mimeType`, `text` keys
-- [ ] `text` value is JSON string
-- [ ] Registered in `config/services.php`
-- [ ] Has corresponding test validating structure
-
-## Workflow Guidelines
-
-### When Adding New Tools
-1. Discuss tool purpose and when AI should use it
-2. Create class in `src/Capability/`
-3. Add `#[McpTool]` attribute with clear description
-4. Inject ComposerRunner, OutputParser, ToonFormatter
-5. Implement method returning TOON format
-6. Register in `config/services.php`
-7. Create test validating behavior
-8. Run quality checks
-
-### When Modifying Parser
-1. Add method to `OutputParser`
-2. Update `ParsedResult` if new fields needed
-3. Add test to `OutputParserTest`
-4. Update formatter if needed
-
-### When Modifying Output Format
-1. Update `ToonFormatter` methods
-2. Update `ToonFormatterTest`
-3. Document changes in README
-
-## Development Commands Reference
+Run:
 
 ```bash
-# Install dependencies
-composer install
-
-# Run all tests
 composer test
-
-# Check all quality tools
 composer lint
-
-# Auto-fix code style and refactoring
-composer fix
-
-# Individual tools
-vendor/bin/phpstan analyse
-vendor/bin/php-cs-fixer fix --dry-run --diff
-vendor/bin/rector process --dry-run
-vendor/bin/phpunit tests/Unit/Capability/InstallToolTest.php
 ```
 
-## Common Mistakes to Prevent
+## Commit Messages
 
-### Don't
-- Don't add `declare(strict_types=1)` to PHP files
-- Don't make classes `final`
-- Don't use `json_encode()` without error flags
-- Don't forget to register new capabilities in `config/services.php`
-- Don't skip tests
-- Don't use generic tool descriptions
-
-### Do
-- Keep classes extensible (non-final)
-- Use `\JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT` for JSON encoding
-- Write specific, actionable tool descriptions
-- Register all capabilities in service container
-- Test all tools and resources
-- Run `composer lint` before committing
-
-## Quality Gates
-
-Before submitting changes:
-1. `composer lint` passes
-2. `composer test` passes
-3. New code has tests
-4. Documentation updated if needed
-
-## Commit Message Guidelines
-
-**CRITICAL**: Never include AI attribution in commit messages.
-
-### Format
-```
-Short descriptive summary
-
-- Conceptual change or improvement
-- Another concept addressed
-```
-
-### Rules
-- **NEVER** add "Co-Authored-By: Claude" or similar AI attribution
-- **NEVER** mention "coded by claude-code" or AI assistance
-- Describe CONCEPTS and improvements, not file names
-- Use natural language explaining what changed
-- Keep summary under 50 characters
-- Focus on WHY and WHAT, not technical details
+Never include AI attribution. Describe conceptual changes and user-facing outcomes.

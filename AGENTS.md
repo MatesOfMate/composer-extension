@@ -10,8 +10,8 @@ Maintain a package-specific MCP extension for Composer workflows. Keep docs, exa
 
 - Register capabilities in `config/config.php`.
 - Keep docs aligned with the current Mate workflow: `mate init`, automatic discovery, `mate discover` refreshes, and Codex wrappers.
-- This package is TOON-first by design. Do not describe it as optional TOON unless the implementation changes.
-- If you mention upstream PR `#1439`, describe it as upstream direction, not merged local behavior.
+- This package uses Mate's core `ResponseEncoder` for MCP-facing payloads.
+- Describe TOON as optional runtime behavior provided by Mate, with JSON fallback.
 
 ## When Adding or Updating Tools
 

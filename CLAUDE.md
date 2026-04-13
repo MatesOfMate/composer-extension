@@ -4,7 +4,7 @@ Guidance for working on the Composer extension.
 
 ## Overview
 
-This package provides Composer dependency management tools for Symfony AI Mate. It is intentionally TOON-first and uses package-specific formatters rather than the optional encoder pattern proposed upstream in `symfony/ai` PR `#1439`.
+This package provides Composer dependency management tools for Symfony AI Mate. It uses Mate's core response encoder for MCP-facing payloads.
 
 ## Current Mate Workflow
 
@@ -19,7 +19,7 @@ This package provides Composer dependency management tools for Symfony AI Mate. 
 - `src/Capability/` for MCP tools and resources
 - `src/Runner/` for Composer process execution
 - `src/Parser/` for command parsing
-- `src/Formatter/` for TOON output
+- `src/Formatter/` for encoded MCP output
 - `config/config.php` for service registration
 
 ## Service Registration
@@ -28,9 +28,9 @@ Capabilities are registered in `config/config.php`, not `config/services.php`.
 
 ## Output Strategy
 
-- Tools return TOON-formatted strings through `ToonFormatter`.
-- The `composer://config` resource also returns TOON-oriented content.
-- When documenting this package, be explicit that the upstream optional TOON pattern exists, but this package currently keeps TOON as a required runtime dependency and a deliberate product choice.
+- Tools return encoded strings through the formatter layer and Mate's core `ResponseEncoder`.
+- The `composer://config` resource also returns encoded text.
+- Document TOON as optional runtime behavior with JSON fallback.
 
 ## Commands
 

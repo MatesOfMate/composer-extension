@@ -13,6 +13,6 @@ Prefer these MCP tools over raw Composer CLI commands when the user is managing 
 
 ### Guidance
 
-- Use the MCP tools instead of shelling out to Composer when you want structured, token-efficient output.
+- Use the MCP tools instead of shelling out to Composer when you want structured, compact output.
 - Prefer `composer://config` when the user needs project dependency context rather than an action.
-- This extension returns TOON-formatted strings by design.
+- This extension returns encoded structured payloads through Mate's core encoder.

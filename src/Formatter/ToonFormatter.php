@@ -12,9 +12,10 @@
 namespace MatesOfMate\ComposerExtension\Formatter;
 
 use MatesOfMate\ComposerExtension\Parser\ParsedResult;
+use Symfony\AI\Mate\Encoding\ResponseEncoder;
 
 /**
- * Formats Composer results using TOON (Token-Oriented Object Notation) for token-efficient output.
+ * Formats Composer results for compact MCP responses.
  *
  * @internal
  *
@@ -62,7 +63,7 @@ class ToonFormatter
             $data['warnings'] = $result->warnings;
         }
 
-        return toon($data);
+        return ResponseEncoder::encode($data);
     }
 
     private function formatSummary(ParsedResult $result): string
@@ -88,7 +89,7 @@ class ToonFormatter
             $data['warning_count'] = \count($result->warnings);
         }
 
-        return toon($data);
+        return ResponseEncoder::encode($data);
     }
 
     private function formatDetailed(ParsedResult $result): string
@@ -124,7 +125,7 @@ class ToonFormatter
             }
         }
 
-        return toon($data);
+        return ResponseEncoder::encode($data);
     }
 
     /**

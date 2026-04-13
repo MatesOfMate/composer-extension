@@ -13,9 +13,10 @@ namespace MatesOfMate\ComposerExtension\Capability;
 
 use MatesOfMate\ComposerExtension\Config\ConfigurationDetector;
 use Mcp\Capability\Attribute\McpResource;
+use Symfony\AI\Mate\Encoding\ResponseEncoder;
 
 /**
- * Provides composer.json content to AI assistants in TOON format.
+ * Provides composer.json content to AI assistants as an encoded resource payload.
  *
  * @author Johannes Wachter <johannes@sulu.io>
  */
@@ -32,7 +33,7 @@ class ConfigResource
     #[McpResource(
         uri: 'composer://config',
         name: 'Composer Configuration',
-        description: 'Provides the content of composer.json file including dependencies, autoloading, and scripts configuration in token-optimized TOON format.',
+        description: 'Provides the content of composer.json file including dependencies, autoloading, and scripts configuration as an encoded structured payload.',
         mimeType: 'text/plain'
     )]
     public function getConfiguration(): array
@@ -42,7 +43,7 @@ class ConfigResource
         return [
             'uri' => 'composer://config',
             'mimeType' => 'text/plain',
-            'text' => toon($config),
+            'text' => ResponseEncoder::encode($config),
         ];
     }
 }

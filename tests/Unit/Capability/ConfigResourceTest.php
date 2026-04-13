@@ -14,6 +14,7 @@ namespace MatesOfMate\ComposerExtension\Tests\Unit\Capability;
 use MatesOfMate\ComposerExtension\Capability\ConfigResource;
 use MatesOfMate\ComposerExtension\Config\ConfigurationDetector;
 use PHPUnit\Framework\TestCase;
+use Symfony\AI\Mate\Encoding\ResponseEncoder;
 
 /**
  * @author Johannes Wachter <johannes@sulu.io>
@@ -36,7 +37,7 @@ class ConfigResourceTest extends TestCase
         $this->assertSame('text/plain', $result['mimeType']);
     }
 
-    public function testGetConfigurationReturnsToonFormat(): void
+    public function testGetConfigurationReturnsDecodablePayload(): void
     {
         $projectRoot = \dirname(__DIR__, 3);
         $configDetector = new ConfigurationDetector($projectRoot);
@@ -44,8 +45,9 @@ class ConfigResourceTest extends TestCase
         $resource = new ConfigResource($configDetector);
         $result = $resource->getConfiguration();
 
-        // TOON format contains key: value pairs
-        $this->assertStringContainsString('name: matesofmate/composer-extension', $result['text']);
+        $decoded = ResponseEncoder::decode($result['text']);
+
+        $this->assertSame('matesofmate/composer-extension', $decoded['name']);
     }
 
     public function testGetConfigurationWithEmptyConfig(): void
@@ -58,7 +60,7 @@ class ConfigResourceTest extends TestCase
 
         $this->assertSame('composer://config', $result['uri']);
         $this->assertSame('text/plain', $result['mimeType']);
-        $this->assertSame('', $result['text']);
+        $this->assertSame([], ResponseEncoder::decode($result['text']));
     }
 
     public function testGetConfigurationIncludesDependencies(): void
@@ -75,8 +77,9 @@ class ConfigResourceTest extends TestCase
         $resource = new ConfigResource($configDetector);
         $result = $resource->getConfiguration();
 
-        $this->assertStringContainsString('name: test/package', $result['text']);
-        $this->assertStringContainsString('require:', $result['text']);
-        $this->assertStringContainsString('php:', $result['text']);
+        $decoded = ResponseEncoder::decode($result['text']);
+
+        $this->assertSame('test/package', $decoded['name']);
+        $this->assertSame('^8.2', $decoded['require']['php']);
     }
 }

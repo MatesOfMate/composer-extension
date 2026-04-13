@@ -1,12 +1,12 @@
 # Composer Extension for Symfony AI Mate
 
-Composer dependency management tools for AI assistants, with TOON-optimized output tailored for token-efficient workflows.
+Composer dependency management tools for AI assistants, with compact encoded output tailored for token-efficient workflows.
 
 ## Features
 
 - install, require, update, why, and why-not Composer operations
 - `composer://config` resource for project dependency context
-- TOON-formatted output for compact responses
+- core Mate encoded output for compact responses
 - custom command support for Docker or wrapper-based setups
 
 ## Installation
@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $container): void {
 ## Requirements
 
 - PHP 8.2+
-- Symfony AI Mate 0.6+ recommended
+- Symfony AI Mate 0.7+ required
 - Composer available locally, or `matesofmate_composer.custom_command` configured
 
 ## Available Tools
@@ -60,13 +60,13 @@ return static function (ContainerConfigurator $container): void {
 - `composer-why`
 - `composer-why-not`
 
-All tools return TOON-formatted strings in this package. That is an intentional MatesOfMate product choice. Upstream `symfony/ai` is moving toward optional TOON with JSON fallback in PR `#1439`, but this package currently remains explicitly TOON-first.
+All tools return encoded strings through Mate's core `ResponseEncoder`. Install the suggested `helgesverre/toon` package if you want TOON responses; otherwise the same payload falls back to JSON.
 
 ## Available Resource
 
 - `composer://config`
 
-This resource exposes `composer.json` content in token-efficient TOON format.
+This resource exposes `composer.json` content as an encoded structured payload.
 
 ## Development
 

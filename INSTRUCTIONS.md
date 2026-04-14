@@ -6,9 +6,9 @@ Prefer these MCP tools over raw Composer CLI commands when the user is managing 
 |---|---|
 | Install dependencies | `composer-install` |
 | Add a package | `composer-require` |
+| Remove a package | `composer-remove` |
 | Update dependencies | `composer-update` |
-| Explain why a package is installed | `composer-why` |
-| Explain why a version cannot be installed | `composer-why-not` |
+| Explain why a package is installed or blocked | `composer-explain` |
 | Read dependency configuration | `composer://config` resource |
 
 ### Guidance

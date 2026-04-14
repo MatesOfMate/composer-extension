@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.2.0
+-----
+
+ * Simplify dependency explanation by replacing why and why-not with a single explain tool
+ * Improve tool and parameter descriptions for generated schemas
+ * Align extension documentation and instructions with the simplified tool inventory
+
 0.1.0
 -----
 

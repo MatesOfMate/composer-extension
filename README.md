@@ -4,7 +4,7 @@ Composer dependency management tools for AI assistants, with compact encoded out
 
 ## Features
 
-- install, require, update, why, and why-not Composer operations
+- install, require, remove, update, and explain Composer operations
 - `composer://config` resource for project dependency context
 - core Mate encoded output for compact responses
 - custom command support for Docker or wrapper-based setups
@@ -55,10 +55,10 @@ return static function (ContainerConfigurator $container): void {
 ## Available Tools
 
 - `composer-install`
+- `composer-remove`
 - `composer-require`
 - `composer-update`
-- `composer-why`
-- `composer-why-not`
+- `composer-explain`
 
 All tools return encoded strings through Mate's core `ResponseEncoder`. Install the suggested `helgesverre/toon` package if you want TOON responses; otherwise the same payload falls back to JSON.
 

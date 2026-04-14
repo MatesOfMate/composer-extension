@@ -30,9 +30,14 @@ class RemoveTool
     ) {
     }
 
+    /**
+     * @param string $package package name to remove
+     * @param bool   $dev     remove the package from require-dev
+     * @param string $mode    output detail level: default, summary, or detailed
+     */
     #[McpTool(
         name: 'composer-remove',
-        description: 'Remove a package from composer.json. Use when removing a library or framework dependency from the project. Available modes: "default" (status + removed packages), "summary" (just counts and status), "detailed" (full output with metadata).'
+        description: 'Remove a package from Composer dependencies.'
     )]
     public function execute(
         string $package,

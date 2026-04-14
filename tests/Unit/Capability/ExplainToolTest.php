@@ -11,7 +11,7 @@
 
 namespace MatesOfMate\ComposerExtension\Tests\Unit\Capability;
 
-use MatesOfMate\ComposerExtension\Capability\WhyNotTool;
+use MatesOfMate\ComposerExtension\Capability\ExplainTool;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Parser\ParsedResult;
@@ -22,25 +22,25 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Johannes Wachter <johannes@sulu.io>
  */
-class WhyNotToolTest extends TestCase
+class ExplainToolTest extends TestCase
 {
-    public function testExecuteWithPackageOnly(): void
+    public function testExecuteUsesWhyWhenVersionIsOmitted(): void
     {
         $runner = $this->createMock(ComposerRunner::class);
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $runResult = new RunResult(0, 'php constraint output', '', false);
-        $parsedResult = new ParsedResult(success: true, command: 'why-not');
+        $runResult = new RunResult(0, 'psr/log is required by symfony/framework-bundle', '', false);
+        $parsedResult = new ParsedResult(success: true, command: 'why');
 
         $runner->expects($this->once())
             ->method('run')
-            ->with(['why-not', 'php'])
+            ->with(['why', 'psr/log'])
             ->willReturn($runResult);
 
         $parser->expects($this->once())
             ->method('parseCommandOutput')
-            ->with($runResult, 'why-not')
+            ->with($runResult, 'why')
             ->willReturn($parsedResult);
 
         $formatter->expects($this->once())
@@ -48,61 +48,38 @@ class WhyNotToolTest extends TestCase
             ->with($parsedResult, 'default')
             ->willReturn('formatted output');
 
-        $tool = new WhyNotTool($runner, $parser, $formatter);
-        $result = $tool->execute('php');
+        $tool = new ExplainTool($runner, $parser, $formatter);
+        $result = $tool->execute('psr/log');
 
         $this->assertSame('formatted output', $result);
     }
 
-    public function testExecuteWithVersion(): void
+    public function testExecuteUsesWhyNotWhenVersionIsProvided(): void
     {
         $runner = $this->createMock(ComposerRunner::class);
         $parser = $this->createMock(OutputParser::class);
         $formatter = $this->createMock(ToonFormatter::class);
 
-        $runResult = new RunResult(0, 'version conflict output', '', false);
+        $runResult = new RunResult(1, 'conflict output', '', false);
         $parsedResult = new ParsedResult(success: true, command: 'why-not');
 
         $runner->expects($this->once())
             ->method('run')
-            ->with(['why-not', 'php', '7.4'])
+            ->with(['why-not', 'psr/log', '^3.0'])
             ->willReturn($runResult);
 
         $parser->expects($this->once())
             ->method('parseCommandOutput')
             ->with($runResult, 'why-not')
             ->willReturn($parsedResult);
-
-        $formatter->expects($this->once())
-            ->method('format')
-            ->with($parsedResult, 'default')
-            ->willReturn('formatted output');
-
-        $tool = new WhyNotTool($runner, $parser, $formatter);
-        $result = $tool->execute('php', '7.4');
-
-        $this->assertSame('formatted output', $result);
-    }
-
-    public function testExecuteWithSummaryMode(): void
-    {
-        $runner = $this->createMock(ComposerRunner::class);
-        $parser = $this->createMock(OutputParser::class);
-        $formatter = $this->createMock(ToonFormatter::class);
-
-        $runResult = new RunResult(0, 'output', '', false);
-        $parsedResult = new ParsedResult(success: true, command: 'why-not');
-
-        $runner->method('run')->willReturn($runResult);
-        $parser->method('parseCommandOutput')->willReturn($parsedResult);
 
         $formatter->expects($this->once())
             ->method('format')
             ->with($parsedResult, 'summary')
             ->willReturn('summary output');
 
-        $tool = new WhyNotTool($runner, $parser, $formatter);
-        $result = $tool->execute('symfony/console', null, 'summary');
+        $tool = new ExplainTool($runner, $parser, $formatter);
+        $result = $tool->execute('psr/log', '^3.0', 'summary');
 
         $this->assertSame('summary output', $result);
     }

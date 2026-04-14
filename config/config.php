@@ -11,12 +11,11 @@
 
 use MatesOfMate\Common\Process\ProcessExecutor;
 use MatesOfMate\ComposerExtension\Capability\ConfigResource;
+use MatesOfMate\ComposerExtension\Capability\ExplainTool;
 use MatesOfMate\ComposerExtension\Capability\InstallTool;
 use MatesOfMate\ComposerExtension\Capability\RemoveTool;
 use MatesOfMate\ComposerExtension\Capability\RequireTool;
 use MatesOfMate\ComposerExtension\Capability\UpdateTool;
-use MatesOfMate\ComposerExtension\Capability\WhyNotTool;
-use MatesOfMate\ComposerExtension\Capability\WhyTool;
 use MatesOfMate\ComposerExtension\Config\ConfigurationDetector;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
@@ -52,8 +51,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(RemoveTool::class);
     $services->set(RequireTool::class);
     $services->set(UpdateTool::class);
-    $services->set(WhyTool::class);
-    $services->set(WhyNotTool::class);
+    $services->set(ExplainTool::class);
 
     // Resources - automatically discovered by #[McpResource] attribute
     $services->set(ConfigResource::class);

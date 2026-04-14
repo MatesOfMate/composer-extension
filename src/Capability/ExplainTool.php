@@ -17,11 +17,11 @@ use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
 use Mcp\Capability\Attribute\McpTool;
 
 /**
- * Shows which packages depend on a given package.
+ * Explains dependency relations and conflicts for a package.
  *
  * @author Johannes Wachter <johannes@sulu.io>
  */
-class WhyTool
+class ExplainTool
 {
     public function __construct(
         private readonly ComposerRunner $runner,
@@ -30,18 +30,29 @@ class WhyTool
     ) {
     }
 
+    /**
+     * @param string      $package package name to inspect
+     * @param string|null $version Version to diagnose. When omitted, the tool explains why the package is installed.
+     * @param string      $mode    output detail level: default, summary, or detailed
+     */
     #[McpTool(
-        name: 'composer-why',
-        description: 'Show which packages depend on a specific package. Use this to understand why a package is installed or to trace dependency chains. Available modes: "default" (dependency list), "summary" (just counts), "detailed" (full dependency details).'
+        name: 'composer-explain',
+        description: 'Explain why a package is installed or why a specific version cannot be installed.'
     )]
     public function execute(
         string $package,
+        ?string $version = null,
         string $mode = 'default',
     ): string {
-        $args = ['why', $package];
+        $command = null === $version ? 'why' : 'why-not';
+        $args = [$command, $package];
+
+        if (null !== $version) {
+            $args[] = $version;
+        }
 
         $runResult = $this->runner->run($args);
-        $parsedResult = $this->parser->parseCommandOutput($runResult, 'why');
+        $parsedResult = $this->parser->parseCommandOutput($runResult, $command);
 
         return $this->formatter->format($parsedResult, $mode);
     }

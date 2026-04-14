@@ -30,9 +30,15 @@ class RequireTool
     ) {
     }
 
+    /**
+     * @param string      $package package name to add
+     * @param string|null $version version constraint to require
+     * @param bool        $dev     add the package to require-dev
+     * @param string      $mode    output detail level: default, summary, or detailed
+     */
     #[McpTool(
         name: 'composer-require',
-        description: 'Add a new package requirement to composer.json. Use when adding a new library or framework dependency to the project. Available modes: "default" (status + errors/warnings), "summary" (just counts and status), "detailed" (full output with metadata).'
+        description: 'Add a new package requirement to Composer dependencies.'
     )]
     public function execute(
         string $package,

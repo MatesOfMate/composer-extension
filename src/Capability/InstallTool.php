@@ -30,9 +30,15 @@ class InstallTool
     ) {
     }
 
+    /**
+     * @param bool   $preferDist         prefer distribution archives over source installs
+     * @param bool   $noDev              skip development dependencies
+     * @param bool   $optimizeAutoloader optimize the generated Composer autoloader
+     * @param string $mode               output detail level: default, summary, or detailed
+     */
     #[McpTool(
         name: 'composer-install',
-        description: 'Install Composer dependencies from composer.json and composer.lock. Use this when setting up a project or ensuring dependencies are up to date. Available modes: "default" (status + errors/warnings), "summary" (just counts and status), "detailed" (full output with metadata).'
+        description: 'Install Composer dependencies from the project lock file.'
     )]
     public function execute(
         bool $preferDist = true,

@@ -30,9 +30,15 @@ class UpdateTool
     ) {
     }
 
+    /**
+     * @param string|null $packages         optional comma- or space-separated package list to update
+     * @param bool        $preferDist       prefer distribution archives over source installs
+     * @param bool        $withDependencies update dependent packages too
+     * @param string      $mode             output detail level: default, summary, or detailed
+     */
     #[McpTool(
         name: 'composer-update',
-        description: 'Update Composer dependencies to latest versions within version constraints. Use when updating packages or resolving dependency conflicts. Available modes: "default" (status + errors/warnings), "summary" (just counts and status), "detailed" (full output with metadata).'
+        description: 'Update Composer dependencies within the configured version constraints.'
     )]
     public function execute(
         ?string $packages = null,

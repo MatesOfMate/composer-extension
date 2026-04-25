@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $container): void {
 ## Requirements
 
 - PHP 8.2+
-- Symfony AI Mate 0.7+ required
+- Symfony AI Mate 0.8+ required
 - Composer available locally, or `matesofmate_composer.custom_command` configured
 
 ## Available Tools

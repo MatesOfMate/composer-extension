@@ -36,10 +36,7 @@ class RequireTool
      * @param bool        $dev     add the package to require-dev
      * @param string      $mode    output detail level: default, summary, or detailed
      */
-    #[McpTool(
-        name: 'composer-require',
-        description: 'Add a new package requirement to Composer dependencies.'
-    )]
+    #[McpTool(name: 'composer-require', title: 'Composer Require', description: 'Add a new package requirement to Composer dependencies.')]
     public function execute(
         string $package,
         ?string $version = null,

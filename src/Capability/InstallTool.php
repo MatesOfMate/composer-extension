@@ -36,10 +36,7 @@ class InstallTool
      * @param bool   $optimizeAutoloader optimize the generated Composer autoloader
      * @param string $mode               output detail level: default, summary, or detailed
      */
-    #[McpTool(
-        name: 'composer-install',
-        description: 'Install Composer dependencies from the project lock file.'
-    )]
+    #[McpTool(name: 'composer-install', title: 'Composer Install', description: 'Install Composer dependencies from the project lock file.')]
     public function execute(
         bool $preferDist = true,
         bool $noDev = false,

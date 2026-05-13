@@ -36,10 +36,7 @@ class UpdateTool
      * @param bool        $withDependencies update dependent packages too
      * @param string      $mode             output detail level: default, summary, or detailed
      */
-    #[McpTool(
-        name: 'composer-update',
-        description: 'Update Composer dependencies within the configured version constraints.'
-    )]
+    #[McpTool(name: 'composer-update', title: 'Composer Update', description: 'Update Composer dependencies within the configured version constraints.')]
     public function execute(
         ?string $packages = null,
         bool $preferDist = true,

@@ -32,7 +32,7 @@ class ConfigResource
      */
     #[McpResource(
         uri: 'composer://config',
-        name: 'Composer Configuration',
+        name: 'composer_configuration',
         description: 'Provides the content of composer.json file including dependencies, autoloading, and scripts configuration as an encoded structured payload.',
         mimeType: 'text/plain'
     )]

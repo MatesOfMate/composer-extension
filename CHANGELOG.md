@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+0.4.0
+-----
+
+ * Support symfony/ai-mate 0.11
+
+0.3.0
+-----
+
+ * Support symfony/ai-mate 0.8 through 0.10
+ * Fix invalid MCP resource name
+
 0.2.0
 -----
 

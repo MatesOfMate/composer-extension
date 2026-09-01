@@ -1,4 +1,4 @@
-# Composer Extension for Symfony AI Mate
+# Composer Extension for Symfony Mate
 
 Composer dependency management tools for AI assistants, with compact encoded output tailored for token-efficient workflows.
 
@@ -16,7 +16,7 @@ composer require --dev matesofmate/composer-extension
 vendor/bin/mate init
 ```
 
-In current AI Mate setups, extension discovery is handled automatically after Composer install and update. Use `vendor/bin/mate discover` when you want to refresh discovery artifacts such as `mate/AGENT_INSTRUCTIONS.md`.
+In current Mate setups, extension discovery is handled automatically after Composer install and update. Use `vendor/bin/mate discover` when you want to refresh discovery artifacts such as `mate/AGENT_INSTRUCTIONS.md`.
 
 Use these commands when troubleshooting:
 
@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $container): void {
 ## Requirements
 
 - PHP 8.2+
-- Symfony AI Mate 0.13+ required
+- Symfony Mate 0.13+ required
 - Composer available locally, or `matesofmate_composer.custom_command` configured
 
 ## Available Tools

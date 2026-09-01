@@ -4,7 +4,7 @@ Guidance for working on the Composer extension.
 
 ## Overview
 
-This package provides Composer dependency management tools for Symfony AI Mate. It uses Mate's core response encoder for tool payloads.
+This package provides Composer dependency management tools for Symfony Mate. It uses Mate's core response encoder for tool payloads.
 
 ## Current Mate Workflow
 

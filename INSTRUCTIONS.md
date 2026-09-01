@@ -1,6 +1,6 @@
 ## Composer Extension
 
-Prefer these MCP tools over raw Composer CLI commands when the user is managing dependencies.
+Prefer these Mate tools over raw Composer CLI commands when the user is managing dependencies.
 
 | User intent | Prefer |
 |---|---|
@@ -13,6 +13,6 @@ Prefer these MCP tools over raw Composer CLI commands when the user is managing 
 
 ### Guidance
 
-- Use the MCP tools instead of shelling out to Composer when you want structured, compact output.
+- Use the Mate tools instead of shelling out to Composer when you want structured, compact output.
 - Prefer `composer://config` when the user needs project dependency context rather than an action.
 - This extension returns encoded structured payloads through Mate's core encoder.

@@ -15,7 +15,7 @@ use MatesOfMate\ComposerExtension\Parser\ParsedResult;
 use Symfony\AI\Mate\Encoding\ResponseEncoder;
 
 /**
- * Formats Composer results for compact MCP responses.
+ * Formats Composer results for compact tool responses.
  *
  * @internal
  *

@@ -14,7 +14,7 @@ namespace MatesOfMate\ComposerExtension\Capability;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
-use Mcp\Capability\Attribute\McpTool;
+use Symfony\AI\Mate\Attribute\MateTool;
 
 /**
  * Explains dependency relations and conflicts for a package.
@@ -35,7 +35,7 @@ class ExplainTool
      * @param string|null $version Version to diagnose. When omitted, the tool explains why the package is installed.
      * @param string      $mode    output detail level: default, summary, or detailed
      */
-    #[McpTool(name: 'composer-explain', title: 'Composer Explain', description: 'Explain why a package is installed or why a specific version cannot be installed.')]
+    #[MateTool(name: 'composer-explain', title: 'Composer Explain', description: 'Explain why a package is installed or why a specific version cannot be installed.')]
     public function execute(
         string $package,
         ?string $version = null,

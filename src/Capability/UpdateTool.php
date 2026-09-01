@@ -14,7 +14,7 @@ namespace MatesOfMate\ComposerExtension\Capability;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
-use Mcp\Capability\Attribute\McpTool;
+use Symfony\AI\Mate\Attribute\MateTool;
 
 /**
  * Updates dependencies to latest versions within constraints.
@@ -36,7 +36,7 @@ class UpdateTool
      * @param bool        $withDependencies update dependent packages too
      * @param string      $mode             output detail level: default, summary, or detailed
      */
-    #[McpTool(name: 'composer-update', title: 'Composer Update', description: 'Update Composer dependencies within the configured version constraints.')]
+    #[MateTool(name: 'composer-update', title: 'Composer Update', description: 'Update Composer dependencies within the configured version constraints.')]
     public function execute(
         ?string $packages = null,
         bool $preferDist = true,

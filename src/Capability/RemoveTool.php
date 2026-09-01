@@ -14,7 +14,7 @@ namespace MatesOfMate\ComposerExtension\Capability;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
-use Mcp\Capability\Attribute\McpTool;
+use Symfony\AI\Mate\Attribute\MateTool;
 
 /**
  * Removes a package from composer.json.
@@ -35,7 +35,7 @@ class RemoveTool
      * @param bool   $dev     remove the package from require-dev
      * @param string $mode    output detail level: default, summary, or detailed
      */
-    #[McpTool(name: 'composer-remove', title: 'Composer Remove', description: 'Remove a package from Composer dependencies.')]
+    #[MateTool(name: 'composer-remove', title: 'Composer Remove', description: 'Remove a package from Composer dependencies.')]
     public function execute(
         string $package,
         bool $dev = false,

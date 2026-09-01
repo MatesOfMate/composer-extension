@@ -4,13 +4,13 @@ Guidelines for agents working on the Composer extension.
 
 ## Focus
 
-Maintain a package-specific MCP extension for Composer workflows. Keep docs, examples, and tool behavior aligned with the actual package.
+Maintain a package-specific Mate extension for Composer workflows. Keep docs, examples, and tool behavior aligned with the actual package.
 
 ## Important Rules
 
 - Register capabilities in `config/config.php`.
-- Keep docs aligned with the current Mate workflow: `mate init`, automatic discovery, `mate discover` refreshes, and Codex wrappers.
-- This package uses Mate's core `ResponseEncoder` for MCP-facing payloads.
+- Keep docs aligned with the current Mate workflow: `mate init`, automatic discovery, `mate discover` refreshes, and the `tools:call` CLI.
+- This package uses Mate's core `ResponseEncoder` for tool payloads.
 - Describe TOON as optional runtime behavior provided by Mate, with JSON fallback.
 
 ## When Adding or Updating Tools

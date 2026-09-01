@@ -23,13 +23,13 @@ Use these commands when troubleshooting:
 ```bash
 vendor/bin/mate debug:extensions
 vendor/bin/mate debug:capabilities
-vendor/bin/mate mcp:tools:list --extension=matesofmate/composer-extension
+vendor/bin/mate tools:list --extension=matesofmate/composer-extension
 ```
 
-For Codex, use the generated wrapper:
+Run a tool directly:
 
 ```bash
-./bin/codex
+vendor/bin/mate tools:call composer-explain --package=psr/log
 ```
 
 ## Custom Command Configuration
@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $container): void {
 ## Requirements
 
 - PHP 8.2+
-- Symfony AI Mate 0.8+ required
+- Symfony AI Mate 0.13+ required
 - Composer available locally, or `matesofmate_composer.custom_command` configured
 
 ## Available Tools

@@ -14,7 +14,7 @@ namespace MatesOfMate\ComposerExtension\Capability;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
-use Mcp\Capability\Attribute\McpTool;
+use Symfony\AI\Mate\Attribute\MateTool;
 
 /**
  * Installs dependencies from composer.json and composer.lock.
@@ -36,7 +36,7 @@ class InstallTool
      * @param bool   $optimizeAutoloader optimize the generated Composer autoloader
      * @param string $mode               output detail level: default, summary, or detailed
      */
-    #[McpTool(name: 'composer-install', title: 'Composer Install', description: 'Install Composer dependencies from the project lock file.')]
+    #[MateTool(name: 'composer-install', title: 'Composer Install', description: 'Install Composer dependencies from the project lock file.')]
     public function execute(
         bool $preferDist = true,
         bool $noDev = false,

@@ -14,7 +14,7 @@ namespace MatesOfMate\ComposerExtension\Capability;
 use MatesOfMate\ComposerExtension\Formatter\ToonFormatter;
 use MatesOfMate\ComposerExtension\Parser\OutputParser;
 use MatesOfMate\ComposerExtension\Runner\ComposerRunner;
-use Mcp\Capability\Attribute\McpTool;
+use Symfony\AI\Mate\Attribute\MateTool;
 
 /**
  * Adds a new package requirement to composer.json.
@@ -36,7 +36,7 @@ class RequireTool
      * @param bool        $dev     add the package to require-dev
      * @param string      $mode    output detail level: default, summary, or detailed
      */
-    #[McpTool(name: 'composer-require', title: 'Composer Require', description: 'Add a new package requirement to Composer dependencies.')]
+    #[MateTool(name: 'composer-require', title: 'Composer Require', description: 'Add a new package requirement to Composer dependencies.')]
     public function execute(
         string $package,
         ?string $version = null,

@@ -12,7 +12,7 @@
 namespace MatesOfMate\ComposerExtension\Capability;
 
 use MatesOfMate\ComposerExtension\Config\ConfigurationDetector;
-use Mcp\Capability\Attribute\McpResource;
+use Symfony\AI\Mate\Attribute\MateResource;
 use Symfony\AI\Mate\Encoding\ResponseEncoder;
 
 /**
@@ -30,7 +30,7 @@ class ConfigResource
     /**
      * @return array{uri: string, mimeType: string, text: string}
      */
-    #[McpResource(
+    #[MateResource(
         uri: 'composer://config',
         name: 'composer_configuration',
         description: 'Provides the content of composer.json file including dependencies, autoloading, and scripts configuration as an encoded structured payload.',

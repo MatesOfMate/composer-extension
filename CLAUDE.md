@@ -4,7 +4,7 @@ Guidance for working on the Composer extension.
 
 ## Overview
 
-This package provides Composer dependency management tools for Symfony AI Mate. It uses Mate's core response encoder for MCP-facing payloads.
+This package provides Composer dependency management tools for Symfony AI Mate. It uses Mate's core response encoder for tool payloads.
 
 ## Current Mate Workflow
 
@@ -12,14 +12,14 @@ This package provides Composer dependency management tools for Symfony AI Mate. 
 - current Mate setups auto-discover extensions after install and update
 - `vendor/bin/mate discover` refreshes discovery and agent instruction artifacts
 - use `vendor/bin/mate debug:extensions` and `vendor/bin/mate debug:capabilities` for troubleshooting
-- use `./bin/codex` for Codex sessions
+- run tools from the CLI with `vendor/bin/mate tools:call <tool> --<param>=<value>`
 
 ## Structure
 
-- `src/Capability/` for MCP tools and resources
+- `src/Capability/` for Mate tools and resources
 - `src/Runner/` for Composer process execution
 - `src/Parser/` for command parsing
-- `src/Formatter/` for encoded MCP output
+- `src/Formatter/` for encoded tool output
 - `config/config.php` for service registration
 
 ## Service Registration
@@ -40,7 +40,7 @@ composer test
 composer lint
 composer fix
 vendor/bin/mate debug:capabilities
-vendor/bin/mate mcp:tools:list --extension=matesofmate/composer-extension
+vendor/bin/mate tools:list --extension=matesofmate/composer-extension
 ```
 
 ## Standards

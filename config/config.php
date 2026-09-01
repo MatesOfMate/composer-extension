@@ -46,13 +46,13 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ConfigurationDetector::class)
         ->arg('$projectRoot', '%mate.root_dir%');
 
-    // Tools - automatically discovered by #[McpTool] attribute
+    // Tools - automatically discovered by #[MateTool] attribute
     $services->set(InstallTool::class);
     $services->set(RemoveTool::class);
     $services->set(RequireTool::class);
     $services->set(UpdateTool::class);
     $services->set(ExplainTool::class);
 
-    // Resources - automatically discovered by #[McpResource] attribute
+    // Resources - automatically discovered by #[MateResource] attribute
     $services->set(ConfigResource::class);
 };

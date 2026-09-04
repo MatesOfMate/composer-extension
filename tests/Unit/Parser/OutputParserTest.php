@@ -74,6 +74,41 @@ class OutputParserTest extends TestCase
         $this->assertTrue($result->hasWarnings());
     }
 
+    public function testParseCommandOutputForWhyKeepsConflictLines(): void
+    {
+        $output = <<<'TEXT'
+            __root__                 dev-main requires  symfony/console (8.0.*)
+            symfony/ai-mate          v0.13.0  requires  symfony/console (^5.4|^6.4|^7.3|^8.0)
+            symfony/framework-bundle v8.0.15  conflicts symfony/console (<7.4.15|>=8.0,<8.0.15)
+            symfony/var-dumper       v8.0.15  conflicts symfony/console (<7.4)
+            symfony/yaml             v8.0.15  conflicts symfony/console (<7.4)
+            TEXT;
+
+        $runResult = new RunResult(exitCode: 0, output: $output, errorOutput: '', isJson: false);
+        $result = $this->parser->parseCommandOutput($runResult, 'why');
+
+        $this->assertTrue($result->isSuccessful());
+        $this->assertCount(5, $result->dependencies, 'conflicts lines must not be silently dropped alongside requires lines');
+        $this->assertSame('requires', $result->dependencies[0]['requires']);
+        $this->assertSame('conflicts', $result->dependencies[2]['requires']);
+        $this->assertSame('symfony/console', $result->dependencies[2]['target'] ?? null);
+        $this->assertSame('<7.4.15|>=8.0,<8.0.15', $result->dependencies[2]['constraint'] ?? null);
+    }
+
+    public function testParseCommandOutputForWhyNotSkipsHintLine(): void
+    {
+        $output = <<<'TEXT'
+            __root__        dev-main requires symfony/console (8.0.*)
+            symfony/ai-mate v0.13.0  requires symfony/console (^5.4|^6.4|^7.3|^8.0)
+            Not finding what you were looking for? Try calling `composer require "symfony/console:99.0" --dry-run` to get another view on the problem.
+            TEXT;
+
+        $runResult = new RunResult(exitCode: 1, output: $output, errorOutput: '', isJson: false);
+        $result = $this->parser->parseCommandOutput($runResult, 'why-not');
+
+        $this->assertCount(2, $result->dependencies);
+    }
+
     public function testParseWhyOutput(): void
     {
         $json = [

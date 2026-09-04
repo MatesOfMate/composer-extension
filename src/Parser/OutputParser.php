@@ -22,6 +22,13 @@ use MatesOfMate\ComposerExtension\Runner\RunResult;
  */
 class OutputParser
 {
+    /**
+     * Relation verbs `composer why`/`why-not` can print, taken from Composer's own
+     * `Link::TYPE_*` descriptions. Longest-first so "requires (for development)" is not
+     * cut short by "requires" matching a prefix of it.
+     */
+    private const RELATION_VERBS = 'requires \(for development\)|does not require|conflicts|provides|replaces|requires';
+
     public function parseCommandOutput(RunResult $result, string $command): ParsedResult
     {
         // For why/why-not commands, parse the text output as dependency info
@@ -234,6 +241,7 @@ class OutputParser
         $dependencies = [];
 
         // Parse lines like: "symfony/ai-mate v0.2.0 requires symfony/config (^5.4|^6.4|^7.3|^8.0)"
+        // and "symfony/framework-bundle v8.0.15 conflicts symfony/console (<7.4.15|>=8.0,<8.0.15)"
         $lines = explode("\n", $output);
         foreach ($lines as $line) {
             $line = trim($line);
@@ -246,8 +254,10 @@ class OutputParser
                 continue;
             }
 
-            // Parse dependency line: "package version requires/does not require target (constraint)"
-            if (preg_match('/^(\S+)\s+(\S+)\s+(requires|does not require)\s+(\S+)\s*(.*)$/', $line, $matches)) {
+            // Parse dependency line: "package version <relation> target (constraint)". A verb this
+            // does not recognize silently drops the line instead of reporting it, so the verb list
+            // must cover everything `why`/`why-not` can print, not just "requires".
+            if (preg_match('/^(\S+)\s+(\S+)\s+('.self::RELATION_VERBS.')\s+(\S+)\s*(.*)$/', $line, $matches)) {
                 $dependencies[] = [
                     'package' => $matches[1],
                     'version' => $matches[2],

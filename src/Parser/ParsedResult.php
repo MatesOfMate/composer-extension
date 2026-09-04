@@ -21,11 +21,11 @@ namespace MatesOfMate\ComposerExtension\Parser;
 class ParsedResult
 {
     /**
-     * @param array<int, array{name: string, version: string, description?: string}>                      $packages
-     * @param array<int, array{package: string, requires: string, version?: string, constraint?: string}> $dependencies
-     * @param array<int, string>                                                                          $errors
-     * @param array<int, string>                                                                          $warnings
-     * @param array<string, mixed>                                                                        $metadata
+     * @param array<int, array{name: string, version: string, description?: string}>                                       $packages
+     * @param array<int, array{package: string, requires: string, version?: string, target?: string, constraint?: string}> $dependencies
+     * @param array<int, string>                                                                                           $errors
+     * @param array<int, string>                                                                                           $warnings
+     * @param array<string, mixed>                                                                                         $metadata
      */
     public function __construct(
         public readonly bool $success,

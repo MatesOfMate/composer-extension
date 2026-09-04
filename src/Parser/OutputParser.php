@@ -69,7 +69,7 @@ class OutputParser
 
             $dependencies[] = [
                 'package' => (string) ($entry[0] ?? ''),
-                'requires' => (string) ($entry[1] ?? ''),
+                'relation' => (string) ($entry[1] ?? ''),
                 'version' => (string) ($entry[2] ?? ''),
                 'constraint' => (string) ($entry[2] ?? ''),
             ];
@@ -100,7 +100,7 @@ class OutputParser
 
             $dependencies[] = [
                 'package' => (string) ($entry[0] ?? ''),
-                'requires' => (string) ($entry[1] ?? ''),
+                'relation' => (string) ($entry[1] ?? ''),
                 'version' => (string) ($entry[2] ?? ''),
                 'constraint' => (string) ($entry[2] ?? ''),
             ];
@@ -261,7 +261,7 @@ class OutputParser
                 $dependencies[] = [
                     'package' => $matches[1],
                     'version' => $matches[2],
-                    'requires' => $matches[3],
+                    'relation' => $matches[3],
                     'target' => $matches[4],
                     'constraint' => trim($matches[5], '() '),
                 ];

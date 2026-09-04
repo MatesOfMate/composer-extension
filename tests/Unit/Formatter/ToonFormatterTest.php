@@ -85,7 +85,7 @@ class ToonFormatterTest extends TestCase
             success: true,
             command: 'why',
             dependencies: [
-                ['package' => 'symfony/framework-bundle', 'requires' => 'symfony/console', 'constraint' => '^6.4'],
+                ['package' => 'symfony/framework-bundle', 'relation' => 'symfony/console', 'constraint' => '^6.4'],
             ],
         );
 

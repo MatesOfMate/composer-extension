@@ -165,7 +165,7 @@ class ToonFormatter
             return [
                 'package' => $dep['package'],
                 'version' => $dep['version'] ?? '',
-                'relation' => $dep['requires'] ?? '',
+                'relation' => $dep['relation'] ?? '',
                 'target' => $dep['target'],
                 'constraint' => $dep['constraint'] ?? '',
             ];
@@ -174,7 +174,7 @@ class ToonFormatter
         // Standard format
         return [
             'package' => $dep['package'],
-            'requires' => $dep['requires'] ?? '',
+            'relation' => $dep['relation'] ?? '',
             'constraint' => $dep['constraint'] ?? $dep['version'] ?? '',
         ];
     }

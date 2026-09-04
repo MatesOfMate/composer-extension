@@ -89,8 +89,8 @@ class OutputParserTest extends TestCase
 
         $this->assertTrue($result->isSuccessful());
         $this->assertCount(5, $result->dependencies, 'conflicts lines must not be silently dropped alongside requires lines');
-        $this->assertSame('requires', $result->dependencies[0]['requires']);
-        $this->assertSame('conflicts', $result->dependencies[2]['requires']);
+        $this->assertSame('requires', $result->dependencies[0]['relation']);
+        $this->assertSame('conflicts', $result->dependencies[2]['relation']);
         $this->assertSame('symfony/console', $result->dependencies[2]['target'] ?? null);
         $this->assertSame('<7.4.15|>=8.0,<8.0.15', $result->dependencies[2]['constraint'] ?? null);
     }

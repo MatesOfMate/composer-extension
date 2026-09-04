@@ -4,6 +4,8 @@ CHANGELOG
 0.7.0
 -----
 
+ * Add a `composer-dependency-changes` skill covering the write tools and how to read what moved
+ * Add a `composer-dependency-conflicts` skill covering constraint diagnosis with `composer-explain`
  * Support symfony/ai-mate 0.13
  * Replace the `#[McpTool]` and `#[McpResource]` attributes with Mate's native `#[MateTool]` and `#[MateResource]`
 

@@ -21,6 +21,7 @@ This package provides Composer dependency management tools for Symfony Mate. It 
 - `src/Parser/` for command parsing
 - `src/Formatter/` for encoded tool output
 - `config/config.php` for service registration
+- `skills/` for the Agent Skills declared through `extra.ai-mate.skills`
 
 ## Service Registration
 

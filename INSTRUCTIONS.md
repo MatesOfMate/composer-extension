@@ -16,3 +16,4 @@ Prefer these Mate tools over raw Composer CLI commands when the user is managing
 - Use the Mate tools instead of shelling out to Composer when you want structured, compact output.
 - Prefer `composer://config` when the user needs project dependency context rather than an action.
 - This extension returns encoded structured payloads through Mate's core encoder.
+- The `mate-composer-dependency-changes` and `mate-composer-dependency-conflicts` skills cover the write workflow and constraint diagnosis; consult them before changing dependencies.

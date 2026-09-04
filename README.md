@@ -68,6 +68,17 @@ All tools return encoded strings through Mate's core `ResponseEncoder`. Install 
 
 This resource exposes `composer.json` content as an encoded structured payload.
 
+## Agent Skills
+
+The extension ships Agent Skills that Mate installs into the project as `mate-<name>`:
+
+- `composer-dependency-changes`: adding, removing, updating and installing dependencies, and reading what moved
+- `composer-dependency-conflicts`: diagnosing why a package is installed or why a version is blocked
+
+```bash
+vendor/bin/mate skills:list
+```
+
 ## Development
 
 ```bash
